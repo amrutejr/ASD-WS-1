@@ -1,3 +1,4 @@
+const { resolve } = require("dns");
 const express = require("express");
 const fs = require("fs/promises");
 const path = require("path");
@@ -11,9 +12,15 @@ async function readFile() {
   return JSON.parse(data);
 }
 
+async function readFileWithDelay() {
+  await new Promise((resolve) => setTimeout(resolve, 1500));
+
+  return await readFile();
+}
+
 app.get("/products", async (req, res) => {
   try {
-    const products = await readFile();
+    const products = await readFileWithDelay();
 
     console.log(products);
     res.json(products);
